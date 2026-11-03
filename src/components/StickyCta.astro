@@ -1,0 +1,77 @@
+---
+// Traka na dnu ekrana na mobitelu. Pojavljuje se kad korisnik odskrola
+// ispod prvog ekrana, a skriva se kad je završni poziv ili footer vidljiv.
+---
+
+<div class="sticky-cta tone-dark" data-sticky-cta aria-hidden="true">
+  <p class="sticky-cta__text">Uvodni razgovor, 45 minuta</p>
+  <a href="/rezervacija" class="btn" tabindex="-1">Rezerviraj</a>
+</div>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-sticky-cta]');
+  const blockers = document.querySelectorAll('footer, [data-hide-sticky]');
+  let pastHero = false;
+  let blocked = false;
+
+  const update = () => {
+    const show = pastHero && !blocked;
+    bar?.classList.toggle('is-visible', show);
+    bar?.setAttribute('aria-hidden', String(!show));
+    bar?.querySelector('a')?.setAttribute('tabindex', show ? '0' : '-1');
+  };
+
+  const onScroll = () => {
+    pastHero = window.scrollY > window.innerHeight * 0.8;
+    update();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const visible = new Set<Element>();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)));
+    blocked = visible.size > 0;
+    update();
+  });
+  blockers.forEach((el) => io.observe(el));
+</script>
+
+<style>
+  .sticky-cta {
+    display: none;
+  }
+
+  @media (max-width: 60rem) {
+    .sticky-cta {
+      position: fixed;
+      left: var(--space-sm);
+      right: var(--space-sm);
+      bottom: calc(var(--space-sm) + env(safe-area-inset-bottom));
+      z-index: var(--z-sticky);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      padding: var(--space-xs) var(--space-xs) var(--space-xs) var(--space-lg);
+      background: var(--color-forest);
+      border-radius: var(--radius-pill);
+      box-shadow: 0 8px 24px oklch(20% 0.05 140 / 0.22);
+      transform: translateY(150%);
+      transition: transform var(--dur-long) var(--ease-out);
+    }
+
+    .sticky-cta.is-visible {
+      transform: none;
+    }
+
+    .sticky-cta__text {
+      font-size: var(--text-sm);
+      color: var(--color-ink-2);
+    }
+
+    .sticky-cta .btn {
+      min-height: 44px;
+    }
+  }
+</style>

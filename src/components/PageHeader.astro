@@ -1,0 +1,47 @@
+---
+// Zaglavlje podstranice: traka mente s naslovom i jednom rečenicom.
+// Opcionalni povratni link (npr. članak natrag na blog) stoji iznad naslova.
+interface Props {
+  title: string;
+  lead?: string;
+  back?: { href: string; label: string };
+}
+const { title, lead, back } = Astro.props;
+---
+
+<section class="page-head band band--mint">
+  <div class="container">
+    {back && <a href={back.href} class="link page-head__back">{back.label}</a>}
+    <h1>{title}</h1>
+    {lead && <p class="lead page-head__lead">{lead}</p>}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .page-head {
+    padding-block: var(--space-3xl) var(--space-2xl);
+  }
+
+  .page-head h1 {
+    max-width: 18ch;
+    text-wrap: balance;
+    font-size: var(--text-display);
+  }
+
+  .page-head__back {
+    display: inline-block;
+    margin-bottom: var(--space-lg);
+    font-size: var(--text-sm);
+  }
+
+  .page-head__lead {
+    margin-top: var(--space-lg);
+  }
+
+  @media (max-width: 60rem) {
+    .page-head {
+      padding-block: var(--space-2xl) var(--space-xl);
+    }
+  }
+</style>

@@ -1,0 +1,310 @@
+---
+import Logo from './Logo.astro';
+
+const links = [
+  { href: '/#kako-radimo', label: 'Kako radimo' },
+  { href: '/#cijene', label: 'Cijene' },
+  { href: '/o-nama', label: 'O nama' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/kontakt', label: 'Kontakt' },
+];
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+// točna stranica je 'page'; članak bloga označava Blog kao mjesto na kojem si
+const current = (href: string) =>
+  path === href ? 'page' : !href.includes('#') && path.startsWith(`${href}/`) ? 'true' : undefined;
+---
+
+<header class="nav" data-header>
+  <div class="container nav__inner">
+    <a href="/" class="nav__home" aria-label="Nulta točka, početna">
+      <Logo />
+    </a>
+
+    <button
+      class="nav__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="main-nav"
+      data-nav-toggle
+    >
+      <span class="visually-hidden">Izbornik</span>
+      <span class="nav__burger" aria-hidden="true"></span>
+    </button>
+
+    <nav id="main-nav" class="nav__menu" aria-label="Glavna navigacija" data-nav>
+      <ul class="nav__links">
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} aria-current={current(l.href)}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a
+        href="/rezervacija"
+        class="btn btn--quiet nav__action"
+        aria-current={current('/rezervacija')}>Rezerviraj</a
+      >
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+
+  const isOpen = () => toggle?.getAttribute('aria-expanded') === 'true';
+
+  // otvaranje vodi fokus na prvi link, zatvaranje ga vraća na gumb izbornika
+  const setOpen = (open: boolean, returnFocus = false) => {
+    toggle?.setAttribute('aria-expanded', String(open));
+    toggle?.querySelector('.visually-hidden')?.replaceChildren(open ? 'Zatvori izbornik' : 'Izbornik');
+    header?.classList.toggle('is-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) nav?.querySelector<HTMLElement>('a')?.focus();
+    else if (returnFocus) toggle?.focus();
+  };
+
+  toggle?.addEventListener('click', () => setOpen(!isOpen()));
+  nav?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen()) setOpen(false, true);
+  });
+  // fokus ostaje u otvorenom izborniku: Tab s gumba za rezervaciju vraća se na gumb izbornika
+  nav?.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab' || !isOpen()) return;
+    const items = nav.querySelectorAll<HTMLElement>('a');
+    const last = items[items.length - 1];
+    if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      toggle?.focus();
+    }
+  });
+  toggle?.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab' && e.shiftKey && isOpen()) {
+      e.preventDefault();
+      const items = nav?.querySelectorAll<HTMLElement>('a');
+      items?.[items.length - 1]?.focus();
+    }
+  });
+  // okretanje mobitela ili širenje prozora na desktop zatvara izbornik
+  matchMedia('(min-width: 60.0625rem)').addEventListener('change', (e) => {
+    if (e.matches && isOpen()) setOpen(false);
+  });
+</script>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky-nav);
+    border-bottom: var(--rule-hair) solid color-mix(in oklab, var(--ref-ink) 8%, transparent);
+  }
+
+  /* poluproziran: trake ispod vidljivo klize. Zamućenje je na zasebnom sloju, jer bi
+     backdrop-filter na samom zaglavlju zatvorio mobilni izbornik (position: fixed)
+     u visinu zaglavlja umjesto preko cijelog ekrana. */
+  .nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: color-mix(in oklab, var(--color-paper) 82%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    min-height: 72px;
+  }
+
+  .nav__home {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .nav__home:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+  }
+
+  .nav__menu {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+  }
+
+  .nav__links {
+    display: flex;
+    gap: var(--space-lg);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav__links a {
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    text-underline-offset: 0.3em;
+    transition: color var(--dur-short) var(--ease-out);
+  }
+
+  .nav__links a:hover {
+    color: var(--color-accent);
+  }
+
+  .nav__links a[aria-current] {
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+    text-decoration-thickness: 2px;
+  }
+
+  .nav__links a:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+  }
+
+  .nav__action[aria-current] {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .nav__action {
+    min-height: 44px;
+    padding-inline: var(--space-md);
+    font-size: var(--text-sm);
+  }
+
+  .nav__toggle {
+    display: none;
+  }
+
+  @media (max-width: 60rem) {
+    .nav__home {
+      position: relative;
+      z-index: var(--z-raised);
+    }
+
+    .nav__toggle {
+      display: grid;
+      place-items: center;
+      position: relative;
+      z-index: var(--z-raised);
+      width: 48px;
+      height: 48px;
+      border: 0;
+      background: none;
+      color: var(--color-ink);
+      cursor: pointer;
+    }
+
+    .nav__toggle:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .nav__burger,
+    .nav__burger::before,
+    .nav__burger::after {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--color-ink);
+      transition:
+        transform var(--dur-short) var(--ease-out),
+        opacity var(--dur-micro) var(--ease-out);
+    }
+
+    .nav__burger {
+      position: relative;
+    }
+
+    .nav__burger::before,
+    .nav__burger::after {
+      content: '';
+      position: absolute;
+      left: 0;
+    }
+
+    .nav__burger::before {
+      transform: translateY(-6px);
+    }
+
+    .nav__burger::after {
+      transform: translateY(6px);
+    }
+
+    .is-open .nav__burger {
+      background: transparent;
+    }
+
+    .is-open .nav__burger::before {
+      transform: rotate(45deg);
+    }
+
+    .is-open .nav__burger::after {
+      transform: rotate(-45deg);
+    }
+
+    .nav__menu {
+      position: fixed;
+      inset: 0;
+      z-index: var(--z-base);
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: var(--space-xl);
+      padding-inline: var(--gutter);
+      background: var(--color-band);
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity var(--dur-short) var(--ease-out),
+        visibility var(--dur-short);
+    }
+
+    .is-open .nav__menu {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .nav__links {
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .nav__links a {
+      font-family: var(--font-display);
+      font-weight: var(--display-weight);
+      letter-spacing: -0.02em;
+      font-size: var(--text-section);
+      line-height: 1.1;
+    }
+
+    /* u otvorenom izborniku rezervacija je jedina glavna akcija */
+    .nav__action {
+      min-height: 48px;
+      padding-inline: var(--space-lg);
+      font-size: var(--text-md);
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: var(--color-accent-ink);
+    }
+
+    .nav__action:hover {
+      background: var(--color-accent-deep);
+      border-color: var(--color-accent-deep);
+    }
+  }
+</style>

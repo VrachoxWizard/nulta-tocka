@@ -1,0 +1,134 @@
+---
+import { Image } from 'astro:assets';
+import josipa from '../assets/josipa.jpeg';
+import mate from '../assets/mate.webp';
+---
+
+<section class="section letter" id="tko-smo">
+  <div class="container grid12 letter__grid">
+    <div class="letter__text">
+      <h2 class="letter__hello">Mi smo Josipa i Mate.</h2>
+      <div class="letter__body">
+        <p>
+          Prije sedam godina započelo je prijateljstvo koje traje i danas. Razgovarali smo o svemu, i o
+          onome što je najteže podijeliti.
+        </p>
+        <p>
+          S vremenom su nam se počeli javljati i drugi ljudi. Shvatili smo da mnogima ne nedostaje
+          rješenje, nego prostor u kojem mogu biti iskreni i saslušani.
+        </p>
+        <p>Zato postoji Nulta točka. Nitko ne bi trebao prolaziti kroz teške trenutke sam.</p>
+      </div>
+      <p class="letter__sign">Josipa i Mate</p>
+      <a href="/o-nama" class="link">Pročitaj našu priču</a>
+    </div>
+
+    <div class="letter__photos">
+      <figure class="letter__photo">
+        <div class="photo">
+          <Image
+            src={josipa}
+            alt="Josipa, suosnivačica Nulte točke"
+            widths={[360, 560, 820]}
+            sizes="(max-width: 60rem) 50vw, 22rem"
+            class="letter__img letter__img--josipa"
+          />
+        </div>
+        <figcaption>Josipa</figcaption>
+      </figure>
+      <figure class="letter__photo">
+        <div class="photo">
+          <Image
+            src={mate}
+            alt="Mate, suosnivač Nulte točke"
+            widths={[360, 560, 820]}
+            sizes="(max-width: 60rem) 50vw, 22rem"
+            class="letter__img letter__img--mate"
+          />
+        </div>
+        <figcaption>Mate</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .letter__grid {
+    align-items: center;
+    row-gap: var(--space-2xl);
+  }
+
+  .letter__text {
+    grid-column: 1 / span 5;
+  }
+
+  .letter__hello {
+    font-size: var(--text-section);
+  }
+
+  .letter__body {
+    margin-top: var(--space-xl);
+    font-size: var(--text-lg);
+    line-height: 1.65;
+    max-width: 44ch;
+  }
+
+  .letter__body p + p {
+    margin-top: var(--space-md);
+  }
+
+  .letter__sign {
+    margin-top: var(--space-xl);
+    font-weight: 600;
+  }
+
+  .letter__text .link {
+    display: inline-block;
+    margin-top: var(--space-md);
+  }
+
+  .letter__photos {
+    grid-column: 7 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .letter__photo {
+    margin: 0;
+  }
+
+  .letter__img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  /* Josipin selfie je taman: lice u kadar i malo više svjetla */
+  .letter__img--josipa {
+    object-position: 38% 12%;
+    filter: grayscale(1) brightness(1.12) contrast(1.06);
+  }
+
+  .letter__img--mate {
+    object-position: 50% 30%;
+  }
+
+  .letter__photo figcaption {
+    margin-top: var(--space-sm);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-ink-2);
+  }
+
+  @media (max-width: 60rem) {
+    .letter__text,
+    .letter__photos {
+      grid-column: 1 / -1;
+    }
+
+    .letter__photos {
+      gap: var(--space-md);
+    }
+  }
+</style>

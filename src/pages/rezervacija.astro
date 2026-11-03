@@ -1,0 +1,336 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { bookingSteps } from '../data/steps';
+import site from '../data/site.json';
+
+const { calUsername, paymentNote } = site.booking;
+const events = site.pricing.filter((p) => p.calEvent);
+---
+
+<Base
+  title="Rezervacija"
+  description="Rezerviraj uvodni razgovor ili individualnu podršku. Odaberi slobodan termin, a potvrdu i link za video poziv dobivaš mailom."
+  showStickyCta={false}
+>
+  <PageHeader
+    title="Odaberi termin koji ti odgovara."
+    lead="Ako ne znaš što odabrati, kreni s uvodnim razgovorom."
+  />
+
+  <section class="booking">
+    <div class="container booking__grid">
+      <div class="booking__main">
+        {
+          calUsername && (
+            <fieldset class="picker">
+              <legend class="visually-hidden">Vrsta razgovora</legend>
+              {events.map((e, i) => (
+                <label class="picker__opt">
+                  <input
+                    type="radio"
+                    name="usluga"
+                    value={e.calEvent}
+                    checked={i === 0}
+                    data-cal-event={e.calEvent}
+                  />
+                  <span class="picker__title">{e.title}</span>
+                  <span class="picker__meta">
+                    {e.features[0]}, {e.price}
+                  </span>
+                </label>
+              ))}
+            </fieldset>
+          )
+        }
+
+        {
+          calUsername ? (
+            <div id="cal-inline" class="cal" data-cal-user={calUsername}>
+              <p class="cal__loading">Učitavam kalendar…</p>
+            </div>
+          ) : (
+            <div class="cal cal--empty">
+              <p class="cal__title">Online kalendar uskoro stiže.</p>
+              <p>
+                Do tada nam se javi porukom i dogovorit ćemo termin. Odgovaramo u najkraćem mogućem
+                roku.
+              </p>
+              {/* dok kontakt forma nije spojena, Instagram je najkraći put do termina */}
+              <div class="cal__actions">
+                {site.contact.web3formsKey || !site.contact.instagram ? (
+                  <a href="/kontakt" class="btn">Pošalji poruku</a>
+                ) : (
+                  <>
+                    <a href={site.contact.instagram} class="btn" rel="noopener" target="_blank">
+                      Piši nam na Instagramu
+                    </a>
+                    <a href="/kontakt" class="link">Ostali kontakti</a>
+                  </>
+                )}
+              </div>
+            </div>
+          )
+        }
+      </div>
+
+      <aside class="booking__side">
+        <h2>Što se događa nakon rezervacije?</h2>
+        <ol class="steps steps--compact">
+          {
+            bookingSteps.map((s) => (
+              <li>
+                <strong>{s.title}</strong>
+                <span>{s.text}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="booking__pay">{paymentNote}</p>
+        <p class="booking__small">
+          Treba ti kontinuirana podrška? <a href="/kontakt" class="link">Javi nam se</a> pa ćemo dogovoriti plan
+          prema tvojim potrebama.
+        </p>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<script>
+  type CalFn = ((...args: unknown[]) => void) & {
+    loaded?: boolean;
+    ns?: Record<string, (...args: unknown[]) => void>;
+    q?: unknown[];
+  };
+  const w = window as unknown as { Cal?: CalFn };
+
+  const container = document.getElementById('cal-inline');
+  const user = container?.dataset.calUser;
+  const radios = document.querySelectorAll<HTMLInputElement>('[data-cal-event]');
+
+  // Odabir usluge iz URL-a (?usluga=individualna-podrska) s kartica cijena
+  const requested = new URLSearchParams(location.search).get('usluga');
+  radios.forEach((r) => {
+    if (r.value === requested) r.checked = true;
+  });
+
+  // Službeni Cal.com embed loader (https://cal.com/docs/embed)
+  function loadCal() {
+    (function (C: any, A: string, L: string) {
+      const p = function (a: any, ar: any) {
+        a.q.push(ar);
+      };
+      const d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          const cal = C.Cal;
+          const ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement('script')).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api: any = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            if (typeof namespace === 'string') {
+              cal.ns[namespace] = cal.ns[namespace] || api;
+              p(cal.ns[namespace], ar);
+              p(cal, ['initNamespace', namespace]);
+            } else p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(window, 'https://app.cal.com/embed/embed.js', 'init');
+  }
+
+  function render(event: string) {
+    if (!container || !user || !w.Cal) return;
+    container.innerHTML = '';
+    w.Cal('init', event, { origin: 'https://app.cal.com' });
+    const api = w.Cal.ns?.[event];
+    api?.('inline', {
+      elementOrSelector: '#cal-inline',
+      calLink: `${user}/${event}`,
+      config: { layout: 'month_view' },
+    });
+    api?.('ui', {
+      // Cal.com ne čita CSS varijable: ovo mora ostati jednako --ref-green iz tokens.css
+      cssVarsPerTheme: { light: { 'cal-brand': '#1F7A4A' } },
+      hideEventTypeDetails: false,
+      layout: 'month_view',
+    });
+  }
+
+  if (container && user) {
+    loadCal();
+    const current = () =>
+      Array.from(radios).find((r) => r.checked)?.value ?? radios[0]?.value ?? '';
+    render(current());
+    radios.forEach((r) => r.addEventListener('change', () => render(r.value)));
+  }
+</script>
+
+<style>
+  .booking {
+    padding-block: var(--space-2xl) var(--section-gap);
+  }
+
+  .booking__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap-columns);
+    row-gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  .booking__main {
+    grid-column: 1 / span 8;
+  }
+
+  .picker {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-md);
+    margin: 0 0 var(--space-lg);
+    padding: 0;
+    border: 0;
+  }
+
+  .picker__opt {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding: var(--space-md) var(--space-lg) var(--space-md) var(--space-3xl);
+    border: var(--rule-hair) solid var(--color-rule);
+    border-radius: var(--radius-card);
+    background: var(--color-paper-3);
+    cursor: pointer;
+    transition: border-color var(--dur-short) var(--ease-out);
+  }
+
+  .picker__opt:hover {
+    border-color: var(--color-ink-2);
+  }
+
+  .picker__opt:has(:checked) {
+    border-color: var(--color-accent);
+  }
+
+  .picker__opt:has(:focus-visible) {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .picker input {
+    position: absolute;
+    left: var(--space-lg);
+    top: var(--space-lg);
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--color-accent);
+  }
+
+  .picker__title {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    letter-spacing: -0.02em;
+    font-size: var(--text-lg);
+  }
+
+  .picker__meta {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  .cal {
+    min-height: 560px;
+    border-top: var(--rule-hair) solid var(--color-ink);
+    overflow: auto;
+  }
+
+  .cal__loading {
+    padding-block: var(--space-xl);
+    color: var(--color-muted);
+  }
+
+  .cal--empty {
+    min-height: 0;
+    padding-top: var(--space-xl);
+  }
+
+  .cal__title {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    letter-spacing: -0.02em;
+    font-size: var(--text-section);
+    line-height: 1.1;
+    max-width: 16ch;
+  }
+
+  .cal--empty > p:not(.cal__title) {
+    margin-top: var(--space-lg);
+    max-width: 48ch;
+    font-size: var(--text-lg);
+    color: var(--color-ink-2);
+  }
+
+  .cal__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+  }
+
+  .booking__side {
+    grid-column: 9 / -1;
+    position: sticky;
+    top: var(--space-3xl);
+    padding-left: var(--space-xl);
+    border-left: var(--rule-hair) solid var(--color-rule);
+  }
+
+  .booking__side h2 {
+    font-size: var(--text-title);
+  }
+
+
+  .booking__pay {
+    padding-top: var(--space-md);
+    border-top: var(--rule-hair) solid var(--color-rule);
+    font-size: var(--text-sm);
+  }
+
+  .booking__small {
+    margin-top: var(--space-md);
+    font-size: var(--text-sm);
+    color: var(--color-ink-2);
+  }
+
+  @media (max-width: 60rem) {
+    .booking__main,
+    .booking__side {
+      grid-column: 1 / -1;
+    }
+
+    .booking__side {
+      position: static;
+      padding-left: 0;
+      border-left: 0;
+      padding-top: var(--space-xl);
+      border-top: var(--rule-hair) solid var(--color-rule);
+    }
+
+    .picker {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

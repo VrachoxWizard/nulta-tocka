@@ -1,0 +1,110 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { getPosts, formatDate, readingTime } from '../../lib/posts';
+
+const posts = await getPosts();
+---
+
+<Base
+  title="Blog"
+  description="Priče, životne lekcije i razmišljanja o promjeni, odnosima i osobnom razvoju."
+>
+  <PageHeader
+    title="Razgovori koji se nastavljaju."
+    lead="Priče, životne lekcije i razmišljanja o promjeni, odnosima i osobnom razvoju."
+  />
+
+  <section class="posts-section">
+    <div class="container">
+      <ol class="posts" reversed>
+        {
+          posts.map((post) => (
+            <li class="post">
+              <a href={`/blog/${post.id}`} class="post__link">
+                <time class="post__date" datetime={post.data.date.toISOString()}>
+                  {formatDate(post.data.date)}
+                </time>
+                <h2 class="post__title">{post.data.title}</h2>
+                <p class="post__desc">{post.data.description}</p>
+                <span class="post__time">{readingTime(post.body)} min čitanja</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .posts-section {
+    padding-block: var(--space-2xl) var(--section-gap);
+  }
+
+  .posts {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--rule-hair) solid var(--color-ink);
+  }
+
+  .post {
+    border-bottom: var(--rule-hair) solid var(--color-rule);
+  }
+
+  .post__link {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap-columns);
+    row-gap: var(--space-xs);
+    align-items: baseline;
+    padding-block: var(--space-xl);
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .post__link:hover .post__title {
+    color: var(--color-accent);
+  }
+
+  .post__link:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+  }
+
+  .post__date {
+    grid-column: 1 / span 2;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  .post__title {
+    grid-column: 3 / span 5;
+    font-size: var(--text-2xl);
+    transition: color var(--dur-short) var(--ease-out);
+  }
+
+  .post__desc {
+    grid-column: 8 / span 4;
+    color: var(--color-ink-2);
+  }
+
+  .post__time {
+    grid-column: 12 / span 1;
+    justify-self: end;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 60rem) {
+    .post__date,
+    .post__title,
+    .post__desc,
+    .post__time {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+  }
+</style>

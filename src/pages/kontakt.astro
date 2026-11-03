@@ -1,0 +1,299 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import site from '../data/site.json';
+
+const { email, instagram, tiktok, web3formsKey } = site.contact;
+---
+
+<Base
+  title="Kontakt"
+  description="Javi nam se porukom, mailom ili na Instagramu. Odgovaramo u najkraćem mogućem roku."
+>
+  <PageHeader
+    title="Napiši nam koju riječ."
+    lead="Ne moraš ništa objašnjavati u detalje. Dovoljno je javiti se."
+  />
+
+  <section class="contact">
+    <div class="container contact__grid">
+      {
+        web3formsKey ? (
+          <form class="form" action="https://api.web3forms.com/submit" method="POST" data-form>
+            <input type="hidden" name="access_key" value={web3formsKey} />
+            <input type="hidden" name="subject" value="Nova poruka s nultatocka web stranice" />
+            <input type="hidden" name="from_name" value="Nulta točka web" />
+            <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" autocomplete="off" />
+
+            <div class="field">
+              <label for="name">Ime</label>
+              <input id="name" name="name" type="text" autocomplete="given-name" required />
+            </div>
+            <div class="field">
+              <label for="email">E-mail</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="message">Poruka</label>
+              <textarea id="message" name="message" rows="6" required />
+              <p class="field__hint">
+                Dovoljno je ukratko. O detaljima ćemo razgovarati kad se čujemo.
+              </p>
+            </div>
+            <label class="consent">
+              <input type="checkbox" name="privola" required />
+              <span>
+                Pristajem da se moji podaci koriste kako bi mi odgovorili na poruku.{' '}
+                <a href="/privatnost">Politika privatnosti</a>
+              </span>
+            </label>
+            <button type="submit" class="btn">Pošalji poruku</button>
+            <p class="form__status" role="status" aria-live="polite" data-status />
+          </form>
+        ) : (
+          <div class="form form--empty">
+            <p class="form__title">Kontakt forma uskoro stiže.</p>
+            <p>Do tada nam piši na Instagramu.</p>
+            {/* prazno stanje vodi na akciju, kao na Rezervaciji */}
+            {instagram ? (
+              <a href={instagram} class="btn form__action" rel="noopener" target="_blank">
+                Piši nam na Instagramu
+              </a>
+            ) : (
+              email && (
+                <a href={`mailto:${email}`} class="btn form__action">
+                  Pošalji e-mail
+                </a>
+              )
+            )}
+          </div>
+        )
+      }
+
+      <aside class="channels">
+        <h2>Ili nas nađi ovdje</h2>
+        <ul>
+          {
+            email && (
+              <li>
+                <span>E-mail</span>
+                <a href={`mailto:${email}`}>{email}</a>
+              </li>
+            )
+          }
+          {
+            instagram && (
+              <li>
+                <span>Instagram</span>
+                <a href={instagram} rel="noopener" target="_blank">@nulta.tocka</a>
+              </li>
+            )
+          }
+          {
+            tiktok && (
+              <li>
+                <span>TikTok</span>
+                <a href={tiktok} rel="noopener" target="_blank">TikTok</a>
+              </li>
+            )
+          }
+        </ul>
+        <p class="channels__cta">
+          Želiš odmah rezervirati? <a href="/rezervacija" class="link">Rezerviraj uvodni razgovor</a>
+        </p>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  const status = form?.querySelector<HTMLElement>('[data-status]');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (button) button.disabled = true;
+    if (status) status.textContent = 'Šaljem…';
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message);
+      form.reset();
+      if (status) status.textContent = 'Hvala. Poruka je poslana i javit ćemo ti se uskoro.';
+    } catch {
+      if (status)
+        status.textContent = 'Poruka nije poslana. Pokušaj ponovno ili nam se javi na Instagramu.';
+    } finally {
+      if (button) button.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .contact {
+    padding-block: var(--space-2xl) var(--section-gap);
+  }
+
+  .contact__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap-columns);
+    row-gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  .form {
+    grid-column: 1 / span 7;
+    display: grid;
+    gap: var(--space-lg);
+  }
+
+  .form__title {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    letter-spacing: -0.02em;
+    font-size: var(--text-section);
+    line-height: 1.1;
+    max-width: 16ch;
+  }
+
+  .form__action {
+    justify-self: start;
+    margin-top: var(--space-sm);
+  }
+
+  .form--empty > p:not(.form__title) {
+    font-size: var(--text-lg);
+    color: var(--color-ink-2);
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .field label {
+    font-weight: 600;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    min-height: 52px;
+    padding: var(--space-sm) var(--space-md);
+    border: var(--rule-hair) solid var(--color-muted);
+    border-radius: var(--radius-card);
+    background: var(--color-paper-3);
+    color: var(--color-ink);
+    outline: 2px solid transparent;
+    outline-offset: -3px;
+  }
+
+  .field input:focus-visible,
+  .field textarea:focus-visible {
+    outline-color: var(--color-focus);
+  }
+
+  .field textarea {
+    resize: vertical;
+  }
+
+  .field__hint {
+    min-height: 1lh;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  .consent {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: flex-start;
+    font-size: var(--text-sm);
+    color: var(--color-ink-2);
+  }
+
+  .consent input {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: var(--space-3xs);
+    accent-color: var(--color-accent);
+  }
+
+  .consent a:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .form .btn {
+    justify-self: start;
+  }
+
+  .form__status {
+    min-height: 1lh;
+    font-weight: 600;
+  }
+
+  .channels {
+    grid-column: 9 / -1;
+  }
+
+  .channels h2 {
+    font-size: var(--text-title);
+  }
+
+  .channels ul {
+    margin: var(--space-lg) 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--rule-hair) solid var(--color-ink);
+  }
+
+  .channels li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding-block: var(--space-md);
+    border-bottom: var(--rule-hair) solid var(--color-rule);
+  }
+
+  .channels li span {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  .channels li a {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    letter-spacing: -0.02em;
+    font-size: var(--text-xl);
+    color: var(--color-ink);
+  }
+
+  .channels li a:hover {
+    color: var(--color-accent);
+  }
+
+  .channels li a:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .channels__cta {
+    margin-top: var(--space-xl);
+    color: var(--color-ink-2);
+  }
+
+  @media (max-width: 60rem) {
+    .form,
+    .channels {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

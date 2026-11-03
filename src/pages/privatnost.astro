@@ -1,0 +1,89 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import site from '../data/site.json';
+
+const updated = '28. listopada 2026.';
+const { email, instagram } = site.contact;
+---
+
+<Base title="Politika privatnosti" description="Kako Nulta točka prikuplja, koristi i štiti tvoje osobne podatke.">
+  <PageHeader title="Politika privatnosti" lead={`Zadnja izmjena: ${updated}`} />
+
+  <section class="section legal">
+    <div class="container"><div class="prose">
+      <p>
+        Tvoja privatnost nam je važna. Ovdje objašnjavamo koje podatke prikupljamo kroz ovu web
+        stranicu, zašto i koja su tvoja prava prema Općoj uredbi o zaštiti podataka (GDPR).
+      </p>
+
+      <h2>Tko je voditelj obrade</h2>
+      <p>
+        Nulta točka (Josipa i Mate). Za sva pitanja o podacima javi nam se{' '}
+        {email ? <a href={`mailto:${email}`}>{email}</a> : <a href={instagram}>na Instagramu</a>}.
+      </p>
+
+      <h2>Koje podatke prikupljamo</h2>
+      <ul>
+        <li>
+          <strong>Kontakt forma:</strong> ime, e-mail adresa i sadržaj poruke. Koristimo ih isključivo
+          da bismo ti odgovorili. Poruku prenosi servis Web3Forms, koji ju prosljeđuje na naš e-mail.
+        </li>
+        <li>
+          <strong>Rezervacija termina:</strong> ime, e-mail adresa i odabrani termin. Rezervacije
+          obrađuje servis Cal.com, koji ti šalje potvrdu i podsjetnike.
+        </li>
+        <li>
+          <strong>Statistika posjeta:</strong> koristimo Cloudflare Web Analytics, koji ne koristi
+          kolačiće i ne prati te između različitih stranica. Bilježi samo anonimne podatke, poput broja
+          posjeta.
+        </li>
+      </ul>
+      <p>
+        Molimo te da kroz formu ne šalješ osjetljive podatke o zdravlju. O tome što te muči
+        razgovarat ćemo uživo, u povjerenju.
+      </p>
+
+      <h2>Kolačići</h2>
+      <p>
+        Ova stranica ne koristi kolačiće za praćenje ni oglašavanje. Kalendar za rezervacije (Cal.com)
+        može koristiti tehnički nužne kolačiće kako bi rezervacija radila.
+      </p>
+
+      <h2>Koliko dugo čuvamo podatke</h2>
+      <p>
+        Podatke iz poruka i rezervacija čuvamo dok je to potrebno za komunikaciju s tobom, a najdulje
+        dvije godine od zadnjeg kontakta, osim ako zakon ne traži drukčije.
+      </p>
+
+      <h2>Tvoja prava</h2>
+      <p>
+        Imaš pravo zatražiti pristup svojim podacima, njihov ispravak ili brisanje, ograničenje obrade
+        te prenosivost podataka. Pristanak možeš povući u bilo kojem trenutku. Ako smatraš da su ti
+        prava povrijeđena, možeš podnijeti prigovor Agenciji za zaštitu osobnih podataka (AZOP).
+      </p>
+
+      <h2>Povjerljivost razgovora</h2>
+      <p>
+        Sve što podijeliš u razgovoru ostaje između nas. Osobnu skriptu dobivaš samo ti i ne dijelimo je
+        ni s kim.
+      </p>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .legal {
+    padding-top: var(--space-2xl);
+  }
+
+  .legal .prose {
+    margin-left: calc(100% / 6);
+  }
+
+  @media (max-width: 60rem) {
+    .legal .prose {
+      margin-left: 0;
+    }
+  }
+</style>

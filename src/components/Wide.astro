@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+// Fotografija preko cijele širine, predah između skripte i cijena.
+// Fotografija: Sebastian Unrau, Unsplash (unsplash.com/photos/sp-p7uuT0tw), Unsplash licenca.
+import photo from '../assets/wide.jpg';
+---
+
+<figure class="wide">
+  <Image
+    src={photo}
+    alt="Maglovita šuma u kojoj se jutarnje svjetlo probija kroz krošnje"
+    widths={[800, 1440, 2400]}
+    sizes="100vw"
+    class="wide__img"
+  />
+</figure>
+
+<style>
+  .wide {
+    margin: 0;
+    background: var(--color-forest);
+  }
+
+  .wide__img {
+    width: 100%;
+    height: clamp(320px, 62vh, 680px);
+    object-fit: cover;
+    object-position: 50% 45%;
+    filter: grayscale(1) contrast(1.05);
+  }
+
+  @media (max-width: 40rem) {
+    .wide__img {
+      height: 280px;
+    }
+  }
+</style>

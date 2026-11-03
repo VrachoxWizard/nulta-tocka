@@ -1,0 +1,392 @@
+/* Nulta točka · sustav „Proljetno jutro“ (2026-11-02). Pravila su u design.md.
+ * Tamna jela i bijela nose stranicu, menta su trake, zelena su akcije, sunčano žuta samo naglasak.
+ * Naslovi u Newsreaderu (serif), tekst u Albert Sansu, Outfit samo u wordmarku. Ravni prijelazi među sekcijama.
+ * Bez geometrijskih tijela (krugova s letka), bez kriznih brojeva u footeru (odluka vlasnika). */
+@import url('@fontsource-variable/newsreader/opsz.css');
+@import url('@fontsource-variable/newsreader/opsz-italic.css');
+@import url('@fontsource-variable/albert-sans');
+@import url('@fontsource-variable/outfit');
+@import url('./tokens.css');
+@import url('./base.css');
+
+html,
+body {
+  overflow-x: clip;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-synthesis: none;
+}
+
+h1,
+h2,
+h3 {
+  font-optical-sizing: auto;
+}
+
+h1 {
+  line-height: 1.02;
+}
+
+h2 {
+  line-height: 1.08;
+}
+
+.lead {
+  color: var(--color-ink-2);
+}
+
+/* ---------- Sekcije ---------- */
+.section {
+  padding-block: var(--section-gap);
+}
+
+/* ---------- Trake ----------
+ * Obojene sekcije idu preko cijele širine, s ravnim prijelazom. Bijela je predah,
+ * menta je traka, jela je tamna traka (s .tone-dark). */
+.band {
+  --color-rule: color-mix(in oklab, var(--ref-ink) 18%, transparent);
+}
+
+/* na menti: tamnija siva i dublja zelena, da tekst i linkovi drže kontrast AA */
+.band--mint {
+  --color-muted: var(--ref-muted-mint);
+  --color-accent: var(--ref-green-deep);
+  --color-accent-deep: var(--ref-green-deeper);
+  --color-focus: var(--ref-green-deep);
+  background: var(--color-band);
+}
+
+.band--forest {
+  background: var(--color-forest);
+}
+
+/* ---------- Svitanje ----------
+ * Potpis: na tamnoj jeli se iz gornjeg desnog kuta, iza fotografije, polako razlije
+ * blago svjetlo (menta, ne žuta: žuta na jeli daje maslinast, mutan ton) dok se riječi
+ * naslova rađaju. Jednom, na učitavanju. */
+.dawn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.dawn::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -45%;
+  right: -20%;
+  width: min(110vw, 1500px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--ref-mint) 20%, transparent) 0%,
+    color-mix(in oklab, var(--ref-mint) 8%, transparent) 45%,
+    transparent 100%
+  );
+  pointer-events: none;
+  transform-origin: 75% 25%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dawn::before {
+    animation: dawn 2.8s var(--ease-out) both;
+  }
+}
+
+@keyframes dawn {
+  from {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Fotografije ----------
+ * Crno-bijelo, zaobljeno; dok se slika učitava vidi se mirna boja umjesto crnog bljeska. */
+.photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-photo);
+  background: color-mix(in oklab, var(--ref-ink) 14%, var(--ref-white));
+}
+
+.photo img {
+  filter: grayscale(1);
+}
+
+/* tamna jela: iste uloge, krem tekst, sunčano žuta za akcije i oznake */
+.tone-dark {
+  --color-ink: var(--ref-cream);
+  --color-ink-2: var(--ref-cream-2);
+  --color-muted: var(--ref-cream-muted);
+  --color-rule: var(--ref-pine-rule);
+  --color-accent: var(--ref-sun);
+  /* hover na tamnom posvjetljuje, da kontrast s tekstom gumba raste */
+  --color-accent-deep: var(--ref-sun-light);
+  --color-accent-ink: var(--ref-pine);
+  --color-focus: var(--ref-sun);
+  --color-card: var(--ref-pine-2);
+  color: var(--color-ink);
+}
+
+/* svijetli otok unutar tamne trake (npr. list skripte) */
+.tone-light {
+  --color-ink: var(--ref-ink);
+  --color-ink-2: var(--ref-ink-2);
+  --color-muted: var(--ref-muted);
+  --color-rule: var(--ref-rule);
+  --color-accent: var(--ref-green);
+  --color-accent-deep: var(--ref-green-deep);
+  --color-accent-ink: var(--ref-white);
+  --color-focus: var(--ref-green);
+  color: var(--color-ink);
+}
+
+/* podstranice: dokument kreće odmah ispod Banner zaglavlja */
+.page-head + .section {
+  padding-top: var(--space-2xl);
+}
+
+.grid12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap-columns);
+}
+
+/* ---------- Kontrole ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: 48px;
+  padding: 0 var(--space-lg);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  font: 500 var(--text-md) / 1 var(--font-body);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-short) var(--ease-out),
+    border-color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
+}
+
+.btn:hover {
+  background: var(--color-accent-deep);
+  border-color: var(--color-accent-deep);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn[aria-busy='true'] {
+  cursor: progress;
+}
+
+.btn--quiet {
+  background: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.btn--quiet:hover {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--ref-white);
+}
+
+.tone-dark .btn--quiet:hover {
+  color: var(--ref-pine);
+}
+
+/* tipografska akcija: podcrtana riječ */
+.link {
+  color: var(--color-ink);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  transition: color var(--dur-short) var(--ease-out);
+}
+
+.link:hover {
+  color: var(--color-accent);
+}
+
+.link:active {
+  color: var(--color-accent-deep);
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Koraci ----------
+ * Jedan uzorak za svaki pravi slijed (koraci rada u Skripti, koraci do razgovora na početnoj
+ * i na Rezervaciji): broj u boji akcenta, naslov, opis, crta iznad svake stavke.
+ * Na šumskoj traci boje dolaze same iz .tone-dark. */
+.steps {
+  margin: var(--space-2xl) 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  column-gap: var(--space-md);
+  padding-block: var(--space-lg);
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+
+.steps li::before {
+  content: counter(step);
+  grid-row: span 2;
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.steps strong {
+  font-size: var(--text-title);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.steps span {
+  margin-top: var(--space-2xs);
+  max-width: 46ch;
+  color: var(--color-ink-2);
+}
+
+/* uska bočna kolona: isti uzorak, sitnije */
+.steps--compact {
+  margin-top: var(--space-lg);
+}
+
+.steps--compact li {
+  grid-template-columns: 2rem minmax(0, 1fr);
+  padding-block: var(--space-md);
+}
+
+.steps--compact li::before {
+  font-size: var(--text-lg);
+}
+
+.steps--compact strong {
+  font-size: var(--text-md);
+}
+
+.steps--compact span {
+  font-size: var(--text-sm);
+}
+
+/* ---------- Prozni tekst (pismo, blog, pravne stranice) ---------- */
+.prose {
+  max-width: 65ch;
+  font-size: var(--text-lg);
+  line-height: 1.7;
+}
+
+.prose > * + * {
+  margin-top: var(--space-md);
+}
+
+.prose h2 {
+  font-size: var(--text-2xl);
+  margin-top: var(--space-2xl);
+}
+
+.prose h3 {
+  font-size: var(--text-xl);
+  margin-top: var(--space-xl);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: var(--space-lg);
+}
+
+.prose li + li {
+  margin-top: var(--space-xs);
+}
+
+.prose li::marker {
+  color: var(--color-accent);
+}
+
+.prose a {
+  color: var(--color-ink);
+  text-decoration-color: var(--color-accent);
+}
+
+.prose a:hover {
+  color: var(--color-accent);
+}
+
+.prose blockquote {
+  margin: var(--space-xl) 0;
+  font-style: italic;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: -0.02em;
+  font-size: var(--text-2xl);
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+
+/* ---------- Ostalo ---------- */
+.skip {
+  position: absolute;
+  left: var(--space-md);
+  top: calc(-1 * var(--space-3xl));
+  z-index: var(--z-toast);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.skip:focus-visible {
+  top: var(--space-md);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

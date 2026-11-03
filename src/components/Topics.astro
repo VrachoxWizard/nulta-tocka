@@ -1,0 +1,142 @@
+---
+import site from '../data/site.json';
+import Icon from './Icon.astro';
+
+// ikona prema nazivu područja; novo područje iz CMS-a dobiva klicu
+const icons: Record<string, 'cloud-sun' | 'unlink' | 'users' | 'sprout' | 'compass'> = {
+  'Mentalno zdravlje': 'cloud-sun',
+  Ovisnosti: 'unlink',
+  'Odnosi i obitelj': 'users',
+  'Osobni razvoj': 'sprout',
+  'Karijera i životne promjene': 'compass',
+};
+---
+
+<section class="section topics" id="podrucja">
+  <div class="container">
+    <div class="topics__head">
+      <h2>O čemu razgovaramo</h2>
+      <p class="lead topics__lead">Ne moraš znati odakle krenuti. Dovoljno je doći.</p>
+    </div>
+
+    <ul class="topics__list">
+      {
+        site.areas.map((area) => (
+          <li class="tile">
+            <span class="tile__icon">
+              <Icon name={icons[area.title] ?? 'sprout'} />
+            </span>
+            <h3 class="tile__title">{area.title}</h3>
+            <p class="tile__items">{area.items.join(', ')}</p>
+          </li>
+        ))
+      }
+      <li class="tile tile--other">
+        <span class="tile__icon">
+          <Icon name="message-circle" />
+        </span>
+        <h3 class="tile__title">Nešto drugo</h3>
+        <p class="tile__items">Tvoje teme nema na popisu? I dalje je dobrodošla.</p>
+        <a href="/rezervacija" class="link tile__link">Rezerviraj uvodni razgovor</a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .topics__head {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap-columns);
+    align-items: end;
+  }
+
+  .topics__head h2 {
+    grid-column: 1 / span 6;
+  }
+
+  .topics__lead {
+    grid-column: 8 / -1;
+  }
+
+  .topics__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-columns);
+    margin: var(--space-2xl) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tile {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-xl);
+    border-radius: var(--radius-tile);
+    background: var(--color-card);
+  }
+
+  .tile__icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--color-paper);
+    color: var(--color-icon);
+  }
+
+  .tile__title {
+    margin-top: var(--space-lg);
+    font-size: var(--text-xl);
+    line-height: 1.2;
+  }
+
+  .tile__items {
+    margin-top: var(--space-sm);
+    max-width: 34ch;
+    color: var(--color-ink-2);
+  }
+
+  /* poziv za teme koje nisu na popisu: obrub umjesto podloge */
+  .tile--other {
+    background: transparent;
+    border: var(--rule-hair) solid var(--color-rule);
+  }
+
+  .tile--other .tile__icon {
+    background: var(--color-card);
+  }
+
+  .tile__link {
+    align-self: flex-start;
+    margin-top: auto;
+    padding-top: var(--space-md);
+  }
+
+  @media (max-width: 60rem) {
+    .topics__head h2,
+    .topics__lead {
+      grid-column: 1 / -1;
+    }
+
+    .topics__lead {
+      margin-top: var(--space-md);
+    }
+
+    .topics__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-md);
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .topics__list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tile {
+      padding: var(--space-lg);
+    }
+  }
+</style>

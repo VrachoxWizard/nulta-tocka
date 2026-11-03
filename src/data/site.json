@@ -1,0 +1,109 @@
+{
+  "name": "Nulta točka",
+  "tagline": "Na granici gdje etikete utihnu, rađa se poimanje.",
+  "description": "Nulta točka je mentorstvo i podrška za osobni razvoj i životne izazove. Siguran prostor za razgovor bez osuđivanja, uz osobni plan za dalje. Razgovori se održavaju online.",
+  "contact": {
+    "email": "",
+    "instagram": "https://www.instagram.com/nulta.tocka/",
+    "tiktok": "",
+    "web3formsKey": ""
+  },
+  "booking": {
+    "calUsername": "",
+    "paymentNote": "Plaćanje je uplatom na račun ili Revolutom. Sve upute dobivaš u mailu nakon rezervacije."
+  },
+  "areas": [
+    {
+      "title": "Mentalno zdravlje",
+      "items": ["stres", "anksioznost", "usamljenost", "burnout", "emocionalne krize", "osjećaj izgubljenosti"]
+    },
+    {
+      "title": "Ovisnosti",
+      "items": ["alkohol", "droge", "kockanje", "videoigre", "društvene mreže", "kompulzivna ponašanja"]
+    },
+    {
+      "title": "Odnosi i obitelj",
+      "items": ["partnerski odnosi", "prekidi", "komunikacijski problemi", "obiteljski odnosi", "postavljanje granica"]
+    },
+    {
+      "title": "Osobni razvoj",
+      "items": ["samopouzdanje", "osobna odgovornost", "životni smjer", "postavljanje ciljeva", "zdrave navike", "disciplina"]
+    },
+    {
+      "title": "Karijera i životne promjene",
+      "items": ["promjena posla", "nezaposlenost", "poduzetništvo", "pronalaženje smjera", "velike životne odluke"]
+    }
+  ],
+  "pricing": [
+    {
+      "id": "uvodni-razgovor",
+      "title": "Uvodni razgovor",
+      "price": "10 €",
+      "period": "",
+      "summary": "Prvi korak. Upoznajemo se i zajedno sagledavamo tvoju situaciju.",
+      "features": ["razgovor do 45 minuta", "upoznavanje", "razumijevanje situacije", "početne smjernice"],
+      "calEvent": "uvodni-razgovor",
+      "highlight": false,
+      "cta": "Rezerviraj uvodni razgovor"
+    },
+    {
+      "id": "individualna-podrska",
+      "title": "Individualna podrška",
+      "price": "20 €",
+      "period": "po razgovoru",
+      "summary": "Dublji razgovor i tvoja osobna skripta s planom za dalje.",
+      "features": ["razgovor do 60 minuta", "individualni pristup", "personalizirana skripta", "plan za dalje"],
+      "calEvent": "individualna-podrska",
+      "highlight": true,
+      "cta": "Rezerviraj razgovor"
+    },
+    {
+      "id": "kontinuirana-podrska",
+      "title": "Kontinuirana podrška",
+      "price": "od 50 €",
+      "period": "mjesečno",
+      "summary": "Za one koji žele da netko bude uz njih kroz cijeli proces promjene.",
+      "features": ["više razgovora tijekom mjeseca", "personalizirane skripte", "praćenje napretka", "podrška između termina"],
+      "calEvent": "",
+      "highlight": false,
+      "cta": "Javi nam se"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Je li ovo terapija?",
+      "answer": "Nije. Nulta točka nije psihološka, psihijatrijska niti zdravstvena ustanova. Ne postavljamo dijagnoze niti provodimo terapijske tretmane. Nudimo mentorstvo, podršku i usmjeravanje kroz razgovor, a temelj toga su godine vlastitog iskustva."
+    },
+    {
+      "question": "Kako izgleda online razgovor?",
+      "answer": "Nakon rezervacije dobivaš link za video poziv. Treba ti samo mobitel ili laptop i mirno mjesto gdje te nitko ne ometa. Kameru možeš i ugasiti ako ti je tako ugodnije."
+    },
+    {
+      "question": "Kako plaćam?",
+      "answer": "Uplatom na račun ili Revolutom. Upute za uplatu dobivaš u mailu odmah nakon rezervacije termina."
+    },
+    {
+      "question": "Je li razgovor povjerljiv?",
+      "answer": "Da. Ono što podijeliš ostaje među nama. Razgovore ne snimamo, a skriptu dobivaš samo ti."
+    },
+    {
+      "question": "Što je skripta?",
+      "answer": "Osobni dokument koji dobivaš nakon razgovora. U njoj je sažetak onoga što smo zajedno prepoznali: obrasci, okidači, tvoje snage i konkretni koraci do idućeg susreta. Tako ništa od razgovora ne ostane zaboravljeno."
+    },
+    {
+      "question": "Što ako mi treba stručna pomoć?",
+      "answer": "Ako procijenimo da ti je potrebna stručna psihološka, psihijatrijska ili druga zdravstvena pomoć, iskreno ćemo ti to reći i uputiti te odgovarajućim stručnjacima i ustanovama. Ako si u krizi, odmah nazovi 112."
+    },
+    {
+      "question": "Mogu li otkazati ili pomaknuti termin?",
+      "answer": "Možeš. U mailu s potvrdom rezervacije imaš link za otkazivanje ili promjenu termina. Molimo te da to napraviš barem 24 sata ranije."
+    }
+  ],
+  "crisisLines": [
+    { "name": "Hitne službe", "number": "112", "note": "Cijeli dan, besplatno" },
+    { "name": "Centar za krizna stanja KBC Zagreb", "number": "01 2376 470", "note": "Cijeli dan" },
+    { "name": "TESA, psihološka pomoć za odrasle", "number": "01 4828 888", "note": "Radnim danom od 10 do 22 h" },
+    { "name": "Plavi telefon", "number": "01 4833 888", "note": "Radnim danom" },
+    { "name": "Hrabri telefon, za djecu i mlade", "number": "116 111", "note": "Radnim danom od 9 do 20 h, besplatno" }
+  ]
+}

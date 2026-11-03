@@ -1,0 +1,36 @@
+:root {
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.8125rem; --text-sm: 0.9375rem; --text-md: 1.0625rem; --text-lg: 1.1875rem; --text-xl: 1.5rem; --text-2xl: 1.875rem; --text-3xl: 2.375rem;
+  --text-display-s: clamp(2.25rem, 3.6vw + 0.75rem, 3.5rem); --text-display: clamp(2.625rem, 4.6vw + 0.9rem, 5rem);
+  --text-section: clamp(2rem, 2.2vw + 1.2rem, 3.25rem); --text-title: clamp(1.1875rem, 0.4vw + 1.05rem, 1.375rem); --text-lead: clamp(1.125rem, 0.35vw + 1rem, 1.3125rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --color-error: oklch(52% 0.19 27); --color-success: oklch(50% 0.12 150);
+  --container: 1360px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 96px; --section-gap: 112px; --section-gap-l: 144px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+
+  /* Proljetno jutro: paleta. Tamna jela i bijela nose stranicu, menta su trake,
+     zelena su akcije, sunčano žuta je samo naglasak (gumb na tamnom, marker, oznaka). */
+  --ref-white: oklch(100% 0 0); --ref-mint: oklch(90.9% 0.032 161); --ref-mint-50: oklch(96.8% 0.012 162);
+  --ref-pine: oklch(32.4% 0.056 167); --ref-pine-2: oklch(36.9% 0.063 167);
+  --ref-ink: oklch(23.2% 0.032 163); --ref-ink-2: oklch(37.5% 0.029 164); --ref-muted: oklch(51.1% 0.025 162); --ref-muted-mint: oklch(45.7% 0.026 162);
+  --ref-rule: color-mix(in oklab, oklch(23.2% 0.032 163) 14%, transparent);
+  --ref-green: oklch(51.5% 0.113 155); --ref-green-deep: oklch(43.5% 0.094 156); --ref-green-deeper: oklch(36.4% 0.079 156); --ref-green-live: oklch(56.9% 0.119 155);
+  --ref-sun: oklch(88% 0.135 86); --ref-sun-light: oklch(92.1% 0.096 88);
+  /* tekst na tamnoj jeli */
+  --ref-cream: oklch(95.7% 0.015 94); --ref-cream-2: oklch(86.8% 0.020 160); --ref-cream-muted: oklch(84% 0.026 158); --ref-pine-rule: oklch(52.3% 0.059 168);
+
+  /* uloge (svijetla podloga); .tone-dark ih preokreće za jelu, .band--mint pojačava zelenu i sivu za mentu */
+  --color-paper: var(--ref-white); --color-paper-3: var(--ref-white);
+  --color-band: var(--ref-mint); --color-card: var(--ref-mint-50); --color-forest: var(--ref-pine); --color-forest-2: var(--ref-pine-2);
+  --color-highlight: var(--ref-sun); --color-icon: var(--ref-green-live);
+  --color-ink: var(--ref-ink); --color-ink-2: var(--ref-ink-2); --color-muted: var(--ref-muted);
+  --color-rule: var(--ref-rule);
+  --color-accent: var(--ref-green); --color-accent-deep: var(--ref-green-deep); --color-accent-ink: var(--ref-white); --color-focus: var(--ref-green);
+
+  /* naslovi u serifu (povjerenje, ugled), tekst u čistoj sans; Outfit samo u wordmarku kao na logu */
+  --font-display: "Newsreader Variable", ui-serif, Georgia, serif; --font-body: "Albert Sans Variable", ui-sans-serif, system-ui, sans-serif; --font-outlier: "Outfit Variable", ui-sans-serif, system-ui, sans-serif;
+  --display-weight: 450;
+  --radius-card: 8px; --radius-photo: clamp(12px, 1.4vw, 20px); --radius-tile: 16px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: 0 1px 2px oklch(20% 0.01 140 / 0.06);
+  --tracking-display: -0.015em;
+}

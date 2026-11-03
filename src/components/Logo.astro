@@ -1,0 +1,54 @@
+---
+// Wordmark „Nulta točka" prema logo.jpeg: tanki krug i natpis u dva reda.
+// Zelena točka u krugu je jedina zelena u znaku.
+---
+
+<span class="wordmark">
+  <svg class="wordmark__mark" viewBox="0 0 40 40" aria-hidden="true">
+    <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle>
+    <circle class="wordmark__dot" cx="20" cy="20" r="4.5"></circle>
+  </svg>
+  <span class="wordmark__text">
+    <span class="wordmark__top">NULTA</span>
+    <span class="wordmark__bottom">TOČKA</span>
+  </span>
+</span>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    color: inherit;
+  }
+
+  .wordmark__mark {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .wordmark__dot {
+    fill: var(--color-accent);
+  }
+
+  .wordmark__text {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-outlier);
+    line-height: 1;
+  }
+
+  .wordmark__top {
+    font-weight: 600;
+    font-size: var(--text-md);
+    letter-spacing: 0.24em;
+  }
+
+  .wordmark__bottom {
+    font-weight: 300;
+    font-size: var(--text-xs);
+    letter-spacing: 0.38em;
+    margin-top: var(--space-2xs);
+  }
+</style>

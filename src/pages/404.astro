@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Stranica nije pronađena" showStickyCta={false}>
+  <section class="nf band band--mint">
+    <div class="container grid12">
+      <div class="nf__text">
+        <h1>Ponekad se izgubimo. To je u redu.</h1>
+        <p class="lead nf__lead">Ova stranica ne postoji, ali put natrag je kratak.</p>
+        <div class="nf__actions">
+          <a href="/" class="btn">Na početnu</a>
+          <a href="/rezervacija" class="link">Rezerviraj razgovor</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-block: var(--section-gap);
+  }
+
+  .grid12 {
+    align-items: center;
+    row-gap: var(--space-2xl);
+  }
+
+  .nf__text {
+    grid-column: 1 / span 7;
+  }
+
+  .nf__text h1 {
+    text-wrap: balance;
+    font-size: var(--text-display);
+  }
+
+  .nf__lead {
+    margin-top: var(--space-lg);
+  }
+
+  .nf__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-lg);
+    margin-top: var(--space-2xl);
+  }
+
+  @media (max-width: 60rem) {
+    .nf__text {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

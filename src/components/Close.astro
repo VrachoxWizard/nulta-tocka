@@ -1,0 +1,93 @@
+---
+import { Image } from 'astro:assets';
+// Fotografija: Nellie Adamyan, Unsplash (unsplash.com/photos/X-2UpU_gY-Q), Unsplash licenca.
+import photo from '../assets/close.jpg';
+import { bookingSteps } from '../data/steps';
+---
+
+<section class="section close" data-hide-sticky>
+  <div class="container grid12 close__grid">
+    <figure class="close__photo photo">
+      <Image
+        src={photo}
+        alt="Drvena stolica i stol uz prozor obasjan svjetlom"
+        widths={[480, 720, 1080]}
+        sizes="(max-width: 60rem) 100vw, 36vw"
+        class="close__img"
+      />
+    </figure>
+
+    <div class="close__text">
+      <h2>Prvi razgovor je online.</h2>
+      <p class="lead close__lead">Video poziv, iz prostora u kojem se osjećaš sigurno.</p>
+
+      <ol class="steps">
+        {
+          bookingSteps.map((s) => (
+            <li>
+              <strong>{s.title}</strong>
+              <span>{s.text}</span>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="close__actions">
+        <a href="/rezervacija" class="btn">Rezerviraj uvodni razgovor</a>
+        <p class="close__ask">Imaš pitanje? <a href="/kontakt" class="link">Piši nam</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .close__grid {
+    align-items: center;
+    row-gap: var(--space-2xl);
+  }
+
+  .close__photo {
+    grid-column: 1 / span 5;
+    margin: 0;
+  }
+
+  .close__img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 40%;
+  }
+
+  .close__text {
+    grid-column: 7 / -1;
+  }
+
+  .close__lead {
+    margin-top: var(--space-lg);
+  }
+
+
+  .close__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md) var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: var(--rule-hair) solid var(--color-rule);
+  }
+
+  .close__ask {
+    color: var(--color-ink-2);
+  }
+
+  @media (max-width: 60rem) {
+    .close__photo,
+    .close__text {
+      grid-column: 1 / -1;
+    }
+
+    .close__img {
+      aspect-ratio: 4 / 3;
+    }
+  }
+</style>

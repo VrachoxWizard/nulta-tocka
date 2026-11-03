@@ -1,0 +1,215 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Close from '../components/Close.astro';
+import josipa from '../assets/josipa.jpeg';
+import mate from '../assets/mate.webp';
+---
+
+<Base
+  title="O nama"
+  description="Nulta točka je nastala iz sedam godina prijateljstva, stotina sati iskrenih razgovora i uvjerenja da nitko ne bi trebao prolaziti kroz život sam."
+>
+  <PageHeader
+    title="Mjesto gdje razumijevanje počinje."
+    lead="Nulta točka nije nastala iz poslovnog plana, nego iz prijateljstva koje traje više od sedam godina."
+  />
+
+  <section class="section story">
+    <div class="container grid12">
+      <h2 class="story__h">Naša priča</h2>
+      <div class="prose story__body">
+        <p>
+          Prije sedam godina započelo je prijateljstvo koje traje i danas. Kroz sve te godine proveli
+          smo nebrojene sate razgovarajući o životu, ljudima, odnosima, problemima, ciljevima, padovima
+          i svemu što nas oblikuje kao osobe.
+        </p>
+        <p>
+          Oboje smo prolazili kroz vlastite borbe, ali naše prijateljstvo nikada nije bilo temeljeno na
+          ovisnosti ili samodestruktivnim obrascima. Povezivala nas je želja za razumijevanjem, osobnim
+          razvojem i traženjem boljeg puta.
+        </p>
+        <p>
+          Susretali smo se i s predrasudama. Mnogima nije bilo uobičajeno vidjeti toliko blisko
+          prijateljstvo između žene i muškarca bez skrivenih interesa. Upravo je iskrenost tog
+          prijateljstva razlog zašto je opstalo. Bili smo jedno uz drugo kad se činilo da nema izlaza.
+        </p>
+        <p>
+          S vremenom su nam se za razgovor počeli obraćati i drugi ljudi. Shvatili smo da mnogima ne
+          nedostaje samo rješenje problema. Nedostaje im prostor u kojem mogu biti iskreni, autentični i
+          saslušani.
+        </p>
+        <blockquote>
+          Promjena ne počinje kada postanemo netko drugi. Počinje kada pronađemo osobu koja je oduvijek
+          bila u nama.
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band band--mint">
+    <div class="container">
+      <article class="bio grid12">
+        <figure class="bio__photo photo">
+          <Image
+            src={josipa}
+            alt="Josipa, suosnivačica Nulte točke"
+            widths={[360, 600, 900]}
+            sizes="(max-width: 60rem) 100vw, 30rem"
+            class="bio__img bio__img--josipa"
+          />
+        </figure>
+        <div class="bio__text">
+          <h2>Josipa</h2>
+          <p class="bio__role">Suosnivačica Nulte točke</p>
+          <div class="prose">
+            <p>
+              Od najranijih dana susretala sam se s izazovima koje nije prošao svatko, ali većina ljudi
+              zna da postoje. Odrasla sam u okruženju u kojem su ovisnosti bile dio svakodnevice, a i
+              sama sam se dugo borila s ovisnošću, depresijom i potragom za vlastitim putem.
+            </p>
+            <p>
+              Zbog svega što sam prošla mogu razumjeti ljude koji se osjećaju izgubljeno, zarobljeno,
+              usamljeno ili neshvaćeno. Ne zato što sam o tome čitala, nego zato što sam to i sama
+              proživjela.
+            </p>
+            <p>
+              Ponekad ne trebamo osobu koja će riješiti naše probleme, nego osobu koja će vjerovati u
+              nas onda kada mi sami u sebe ne vjerujemo. Zato je nastala Nulta točka: mjesto gdje možeš
+              biti ono što jesi, bez straha od osude.
+            </p>
+            <p class="bio__note">
+              Trenutno u edukaciji za Somatic Experiencing®, pristup usmjeren na razumijevanje reakcija
+              tijela na stres.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="bio bio--mate grid12">
+        <figure class="bio__photo photo">
+          <Image
+            src={mate}
+            alt="Mate, suosnivač Nulte točke"
+            widths={[360, 600, 900]}
+            sizes="(max-width: 60rem) 100vw, 30rem"
+            class="bio__img bio__img--mate"
+          />
+        </figure>
+        <div class="bio__text">
+          <h2>Mate</h2>
+          <p class="bio__role">Suosnivač Nulte točke</p>
+          <div class="prose">
+            <p>
+              Od svoje trinaeste godine živim s depresijom i uzimam antidepresivnu terapiju. Kroz život
+              sam se suočavao s izazovima koji nisu uvijek vidljivi drugima, a jedan od njih je i
+              anhedonija, zbog koje je ponekad teško pronaći motivaciju, zadovoljstvo i osjećaj
+              ispunjenosti u stvarima koje bi to inače trebale donositi.
+            </p>
+            <p>
+              Takva iskustva naučila su me koliko svakodnevni život može biti zahtjevan i koliko je
+              važno imati razumijevanje, podršku i prostor za iskren razgovor. Naučila su me i da
+              čovjeka ne određuju njegovi izazovi, nego način na koji se s njima nosi.
+            </p>
+            <p>
+              Kroz godine sam tražio odgovore kroz razgovore, učenje i razumijevanje čovjeka, a posebno
+              me zanimaju područja farmacije, kemije i povezanosti između uma i tijela.
+            </p>
+            <p>
+              Upravo kroz vlastita iskustva i razgovore s drugim ljudima shvatio sam koliko znači kada te
+              netko zaista sasluša bez osuđivanja. Ne zato da riješi tvoje probleme umjesto tebe, nego da
+              ti pomogne sagledati situaciju iz drugačije perspektive i pronaći vlastiti put naprijed.
+            </p>
+            <p>
+              Zato je nastala Nulta točka. Ne kao mjesto koje nudi gotova rješenja, nego kao prostor za
+              razgovor, razumijevanje i osobni razvoj.
+            </p>
+            <blockquote>
+              Vjerujem da snaga nije u tome da nemamo prepreke. Snaga je u tome da nastavimo tražiti svoj
+              put čak i kada nam se čini da ga ne vidimo jasno.
+            </blockquote>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <Close />
+</Base>
+
+<style>
+  .story__h {
+    grid-column: 1 / span 3;
+    font-size: var(--text-2xl);
+    padding-top: var(--space-xs);
+  }
+
+  .story__body {
+    grid-column: 5 / span 7;
+  }
+
+  .bio {
+    align-items: start;
+    row-gap: var(--space-xl);
+  }
+
+  .bio + .bio {
+    margin-top: var(--section-gap);
+  }
+
+  .bio__photo {
+    grid-column: 1 / span 4;
+    margin: 0;
+  }
+
+  .bio__text {
+    grid-column: 6 / span 7;
+  }
+
+
+  .bio__img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  /* Josipin selfie je taman: lice u kadar i malo više svjetla */
+  .bio__img--josipa {
+    object-position: 38% 12%;
+    filter: grayscale(1) brightness(1.12) contrast(1.06);
+  }
+
+  .bio__img--mate {
+    object-position: 50% 30%;
+  }
+
+  .bio__role {
+    margin-block: var(--space-sm) var(--space-xl);
+    color: var(--color-ink-2);
+  }
+
+  .bio__note {
+    padding-top: var(--space-md);
+    border-top: var(--rule-hair) solid var(--color-rule);
+    font-size: var(--text-md);
+    color: var(--color-ink-2);
+  }
+
+  @media (max-width: 60rem) {
+    .story__h,
+    .story__body,
+    .bio__text {
+      grid-column: 1 / -1;
+    }
+
+    .story__body {
+      margin-top: var(--space-lg);
+    }
+
+    .bio__photo,
+    .bio--mate .bio__photo {
+      grid-column: 1 / span 8;
+    }
+  }
+</style>

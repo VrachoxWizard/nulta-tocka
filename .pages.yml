@@ -1,0 +1,103 @@
+# Pages CMS (https://pagescms.org): sučelje za uređivanje bez kodiranja.
+# Prijava preko GitHub računa, a svaka spremljena izmjena automatski objavljuje stranicu.
+
+media:
+  input: public/media
+  output: /media
+
+content:
+  - name: blog
+    label: Blog
+    type: collection
+    path: src/content/blog
+    filename: "{primary}.md"
+    view:
+      primary: title
+      sort: date
+      order: desc
+    fields:
+      - name: title
+        label: Naslov
+        type: string
+        required: true
+      - name: description
+        label: Kratki opis (prikazuje se na popisu i na Googleu)
+        type: text
+        required: true
+      - name: date
+        label: Datum objave
+        type: date
+        required: true
+      - name: draft
+        label: Skica (ne objavljuj još)
+        type: boolean
+        default: false
+      - name: body
+        label: Tekst članka
+        type: rich-text
+
+  - name: site
+    label: Sadržaj stranice
+    type: file
+    path: src/data/site.json
+    format: json
+    fields:
+      - name: name
+        label: Naziv
+        type: string
+      - name: tagline
+        label: Slogan
+        type: string
+      - name: description
+        label: Opis za Google
+        type: text
+      - name: contact
+        label: Kontakt
+        type: object
+        fields:
+          - { name: email, label: E-mail, type: string }
+          - { name: instagram, label: Instagram link, type: string }
+          - { name: tiktok, label: TikTok link, type: string }
+          - { name: web3formsKey, label: Web3Forms ključ (kontakt forma), type: string }
+      - name: booking
+        label: Rezervacije
+        type: object
+        fields:
+          - { name: calUsername, label: Cal.com korisničko ime, type: string }
+          - { name: paymentNote, label: Napomena o plaćanju, type: text }
+      - name: areas
+        label: Područja podrške
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Naziv, type: string }
+          - { name: items, label: Teme, type: string, list: true }
+      - name: pricing
+        label: Cijene
+        type: object
+        list: true
+        fields:
+          - { name: id, label: ID (bez razmaka), type: string }
+          - { name: title, label: Naziv, type: string }
+          - { name: price, label: Cijena (npr. 20 €), type: string }
+          - { name: period, label: Razdoblje (npr. mjesečno), type: string }
+          - { name: summary, label: Kratki opis, type: text }
+          - { name: features, label: Stavke, type: string, list: true }
+          - { name: calEvent, label: Cal.com event (prazno = vodi na kontakt), type: string }
+          - { name: highlight, label: Istaknuto, type: boolean }
+          - { name: cta, label: Tekst gumba, type: string }
+      - name: faq
+        label: Česta pitanja
+        type: object
+        list: true
+        fields:
+          - { name: question, label: Pitanje, type: string }
+          - { name: answer, label: Odgovor, type: text }
+      - name: crisisLines
+        label: Krizni brojevi
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Naziv, type: string }
+          - { name: number, label: Broj, type: string }
+          - { name: note, label: Napomena (radno vrijeme), type: string }
