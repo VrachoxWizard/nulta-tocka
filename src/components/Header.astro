@@ -64,7 +64,9 @@ const current = (href: string) =>
     toggle?.setAttribute('aria-expanded', String(open));
     toggle?.querySelector('.visually-hidden')?.replaceChildren(open ? 'Zatvori izbornik' : 'Izbornik');
     header?.classList.toggle('is-open', open);
-    document.body.style.overflow = open ? 'hidden' : '';
+    // skrolanje se zaključava na <html>, ne na <body>: body s overflow: hidden postaje
+    // vlastiti scroll kontejner pa ljepljivo zaglavlje (i X za zatvaranje) odleti s ekrana
+    document.documentElement.style.overflow = open ? 'hidden' : '';
     if (open) nav?.querySelector<HTMLElement>('a')?.focus();
     else if (returnFocus) toggle?.focus();
   };
@@ -204,9 +206,13 @@ const current = (href: string) =>
       width: 48px;
       height: 48px;
       border: 0;
-      background: none;
+      border-radius: 50%;
+      background: transparent;
       color: var(--color-ink);
       cursor: pointer;
+      transition:
+        background-color var(--dur-short) var(--ease-out),
+        box-shadow var(--dur-short) var(--ease-out);
     }
 
     .nav__toggle:focus-visible {
@@ -214,16 +220,28 @@ const current = (href: string) =>
       outline-offset: 2px;
     }
 
+    /* otvoren izbornik: X u bijelom krugu, jasno vidljiv na mint pozadini */
+    .is-open .nav__toggle {
+      background: var(--color-paper);
+      box-shadow: 0 1px 2px color-mix(in oklab, var(--ref-ink) 10%, transparent),
+        0 6px 18px color-mix(in oklab, var(--ref-ink) 10%, transparent);
+    }
+
+    .is-open .nav__toggle:hover {
+      color: var(--color-accent);
+    }
+
     .nav__burger,
     .nav__burger::before,
     .nav__burger::after {
       display: block;
       width: 22px;
-      height: 1.5px;
-      background: var(--color-ink);
+      height: 2px;
+      border-radius: 2px;
+      background: currentColor;
       transition:
         transform var(--dur-short) var(--ease-out),
-        opacity var(--dur-micro) var(--ease-out);
+        background-color var(--dur-micro) var(--ease-out);
     }
 
     .nav__burger {
@@ -250,11 +268,11 @@ const current = (href: string) =>
     }
 
     .is-open .nav__burger::before {
-      transform: rotate(45deg);
+      transform: rotate(45deg) scaleX(0.9);
     }
 
     .is-open .nav__burger::after {
-      transform: rotate(-45deg);
+      transform: rotate(-45deg) scaleX(0.9);
     }
 
     .nav__menu {
